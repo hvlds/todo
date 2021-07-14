@@ -11,24 +11,7 @@ app.component("todo-list", {
     
 
     <div v-if="tasks.length > 0" class="box">
-        <div class="box">
-        <span class="tag is-primary m-1">
-            Today
-            <button class="delete is-small"></button>
-        </span>
-        <span class="tag is-warning m-1">
-            Yesterday
-            <button class="delete is-small"></button>
-        </span>
-        <span class="tag is-danger m-1">
-            Earlier
-            <button class="delete is-small"></button>
-        </span>
-        <span class="tag is-light m-1">
-            Completed
-            <button class="delete is-small"></button>
-        </span>
-    </div>
+        <todo-filter></todo-filter>
         <ul>
             <li v-for="(task, index) in tasks">
                 <div class="column columns is-vcentered mt-0">
