@@ -28,15 +28,10 @@ app.component("todo-filter", {
     methods: {
         toggleTag(index) {
             this.tags[index].isEnable ^= true
-        },
-        areAllDisabled() {
-            let disableCounter = 0
-            for (tag in this.tags) {
-                if (tag.isEnable == false) {
-                    disableCounter += 1
-                }
-            }
-            return disableCounter == 0
+            let disabledTags = this.tags.filter(tag => !tag.isEnable)
+            let disabledNames = disabledTags.map(tag => tag.name)
+            
+            this.$emit("tag-toggled", disabledNames)
         }
     }
 })

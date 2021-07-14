@@ -11,13 +11,13 @@ app.component("todo-list", {
     
 
     <div v-if="tasks.length > 0" class="box">
-        <todo-filter></todo-filter>
+        <todo-filter @tag-toggled="onTagToggled"></todo-filter>
         <ul>
             <li v-for="(task, index) in tasks">
-                <div class="column columns is-vcentered mt-0">
+                <div v-show="task.isVisible" class="column columns is-vcentered mt-0">
                     <div class="column is-11">
                         <label class="label is-size-5">
-                            <input 
+                            <input                                 
                                 type="checkbox" 
                                 name="{{ task.description }}" 
                                 value="{{ task.description }}">
@@ -70,6 +70,26 @@ app.component("todo-list", {
         },
         isEarlier(taskDate) {
             return !this.isToday(taskDate) && !this.isYesterday(taskDate)
+        },
+        onTagToggled(disabledNames) {
+            for (let [index, task] of this.tasks.entries()) {
+                let day = ""
+                
+                if (this.isToday(task.date)) {
+                    day = "Today"
+                } else if(this.isYesterday(task.date)) {
+                    day = "Yesterday"
+                } else if(this.isEarlier(task.date)) {
+                    day = "Earlier"
+                }
+
+                if (disabledNames.includes(day)) {
+                    console.log("Pip")
+                    this.tasks[index].isVisible = false
+                } else {
+                    this.tasks[index].isVisible = true
+                }
+            }
         }
     }
 })
