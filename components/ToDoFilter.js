@@ -7,22 +7,9 @@ app.component("todo-filter", {
         <div class="columns column">
             <span 
                 v-for="(tag, index) in tags" 
-                class="tag ml-1"
-                v-show="tag.isEnable" 
-                @click="disableTag(index)"
-                :class="tag.color">
-                {{ tag.name }}
-            </span>
-        </div>
-
-        <!-- Disabled Tags -->
-        <div class="columns column">
-            <span 
-                v-for="(tag, index) in tags"
-                @click="enableTag(index)" 
-                class="tag is-light ml-1" 
-                v-show="!tag.isEnable"
-                :class="tag.color">
+                class="tag ml-1" 
+                @click="toggleTag(index)"
+                :class="[{'is-light': !tag.isEnable}, tag.color]">
                 {{ tag.name }}
             </span>
         </div>
@@ -39,11 +26,8 @@ app.component("todo-filter", {
         }
     },
     methods: {
-        disableTag(index) {
-            this.tags[index].isEnable = false
-        },
-        enableTag(index) {
-            this.tags[index].isEnable = true
+        toggleTag(index) {
+            this.tags[index].isEnable ^= true
         },
         areAllDisabled() {
             let disableCounter = 0
