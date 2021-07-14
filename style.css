@@ -10,12 +10,12 @@ body {
     text-decoration: line-through;
 }
 
-input[type=checkbox] {
-    transform: scale(1.5);
-}
-
 .icon {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.task-tag {
+    float: right;
 }
