@@ -18,7 +18,8 @@ app.component("todo-form", {
     data() {
         return {
             taskDescription: "",
-            tasks: [],
+            tasks: new Map(),
+            lastID: 0,
         }
     },
     methods: {
@@ -26,15 +27,18 @@ app.component("todo-form", {
             if (this.taskDescription === "") {
                 return
             }
-
+            
+            this.lastID += 1
+            
             let newTask = {
                 description: this.taskDescription,
                 date: new Date(),
                 isVisible: true,
-                isCompleted: false
+                isCompleted: false,
+                id: this.lastID
             }
-
-            this.tasks.push(newTask)
+            
+            this.tasks.set(this.lastID, newTask)
             this.taskDescription = ""
         }
     }
