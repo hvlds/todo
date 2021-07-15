@@ -30,7 +30,8 @@ app.component("todo-form", {
             let newTask = {
                 description: this.taskDescription,
                 date: new Date(),
-                isVisible: true
+                isVisible: true,
+                isCompleted: false
             }
 
             this.tasks.push(newTask)

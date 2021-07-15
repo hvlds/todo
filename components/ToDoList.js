@@ -8,23 +8,24 @@ app.component("todo-list", {
     template: 
     /*html*/
     `
-    
-
     <div v-if="tasks.length > 0" class="box">
         <todo-filter @tag-toggled="onTagToggled"></todo-filter>
         <ul>
             <li v-for="(task, index) in tasks">
                 <div v-show="task.isVisible" class="column columns is-vcentered mt-0">
                     <div class="column is-11">
-                        <label class="label is-size-5">
+                        <label class="label is-size-5" :class="{'task-completed':task.isCompleted}">
                             <input                                 
-                                type="checkbox" 
+                                type="checkbox"
+                                v-show="!task.isCompleted"
+                                @click="completeTask(index)" 
                                 name="{{ task.description }}" 
                                 value="{{ task.description }}">
                             {{ task.description }}
-                            <span v-if="isToday(task.date)" class="tag task-tag is-primary">Today</span>
-                            <span v-if="isYesterday(task.date)" class="tag task-tag is-warning">Yesterday</span>
-                            <span v-if="isEarlier(task.date)" class="tag task-tag is-danger">Earlier</span>
+                            <span v-if="task.isCompleted" class="tag task-tag is-info">Completed</span>
+                            <span v-else-if="isToday(task.date)" class="tag task-tag is-primary">Today</span>
+                            <span v-else-if="isYesterday(task.date)" class="tag task-tag is-warning">Yesterday</span>
+                            <span v-else-if="isEarlier(task.date)" class="tag task-tag is-danger">Earlier</span>
                         </label>
                     </div>
                     <div class="column is-1">
@@ -32,7 +33,8 @@ app.component("todo-list", {
                     </div>
                 </div>
                 <div 
-                    v-if="tasks.length != 1 && index != tasks.length - 1" 
+                    v-if="tasks.length != 1 && index != tasks.length - 1"
+                    v-show="task.isVisible" 
                     style="border-top: 3px solid #bbb;">
                 </div>
             </li>
@@ -47,6 +49,9 @@ app.component("todo-list", {
     methods: {
         deleteTask(index) {
             this.tasks.splice(index, 1)
+        },
+        completeTask(index) {
+            this.tasks[index].isCompleted = true
         },
         isToday(taskDate) {
             let today = new Date()
@@ -73,23 +78,28 @@ app.component("todo-list", {
         },
         onTagToggled(disabledNames) {
             for (let [index, task] of this.tasks.entries()) {
-                let day = ""
+                let state = ""
                 
-                if (this.isToday(task.date)) {
-                    day = "Today"
+                if (task.isCompleted) {
+                    state = "Completed"
+                } else if (this.isToday(task.date)) {
+                    state = "Today"
                 } else if(this.isYesterday(task.date)) {
-                    day = "Yesterday"
+                    state = "Yesterday"
                 } else if(this.isEarlier(task.date)) {
-                    day = "Earlier"
+                    state = "Earlier"
                 }
 
-                if (disabledNames.includes(day)) {
-                    console.log("Pip")
+                if (disabledNames.includes(state)) {
                     this.tasks[index].isVisible = false
                 } else {
                     this.tasks[index].isVisible = true
                 }
             }
+        },
+        getCompletedTasks() {
+            let completedTasks = this.tasks.filter(task => task.isCompleted)
+            return completedTasks
         }
     }
 })
