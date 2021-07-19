@@ -1,0 +1,10 @@
+version: "3"
+services:
+    todo-client:
+        image: todo-client:latest
+        ports:
+            - 8080:80
+    todo-server:
+        image: todo-server:latest
+        ports:
+            - 8090:90
