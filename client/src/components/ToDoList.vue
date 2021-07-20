@@ -92,7 +92,13 @@ export default {
     },
     methods: {
         deleteTask(index) {
-            this.tasks.delete(index)
+            const requestOptions = {
+                method: "DELETE",
+            }
+
+            fetch(`http:127.0.0.1:8090/task/${index}`, requestOptions)
+                .then(response => response.json())
+                .then(this.tasks.delete(index))
         },
         completeTask(index) {
             let tempTask = this.tasks.get(index)

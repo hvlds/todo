@@ -1,5 +1,5 @@
 <template>
-    <div class="column is-half mt-5">
+    <div class="column is-half-desktop mt-5">
         <ToDoForm></ToDoForm>
     </div>
 </template>
