@@ -15,3 +15,13 @@ def create_task(db: Session, task: schemas.TaskCreate):
     db.commit()
     db.refresh(new_task)
     return new_task
+
+
+def delete_task(db: Session, task_id: int):
+    db_task = db.query(models.Task).filter(models.Task.id == task_id).first()
+    db.delete(db_task)
+    db.commit()
+
+
+def update_task(db: Session, task_id: int, task: schemas.TaskUpdate):
+    pass
