@@ -11,7 +11,7 @@
             <button class="button ml-1 is-primary">ADD</button>
         </div>
     </form>
-    <ToDoList v-bind:tasks="tasks"></ToDoList>
+    <ToDoList></ToDoList>
 </template>
 
 <script>
@@ -25,7 +25,6 @@ export default {
     data() {
         return {
             taskDescription: "",
-            tasks: new Map(),
             lastID: 0,
         }
     },
@@ -60,7 +59,6 @@ export default {
                 .then(data => {
                     newTask.id = data.id
                     console.log(this.newTask)
-                    this.tasks.set(data.id, newTask)
                 })
                 .catch(error => console.error(error))
 
