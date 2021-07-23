@@ -99,10 +99,25 @@ export default {
                 })
             
         },
-        completeTask(taskID) {
+        async completeTask(taskID) {
             let tempTask = this.tasks.get(taskID)
             tempTask.isCompleted = true
             tempTask.is_completed = true
+            
+            const requestOptionsPut = {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ 
+                    description: tempTask.description,
+                    date: tempTask.date,
+                    is_completed: tempTask.is_completed
+                })
+            }
+
+            const url = "http://localhost:8090/task/" + taskID
+            await fetch(url, requestOptionsPut)
+                .then(response => response.json())
+
             this.tasks.set(taskID, tempTask)
             this.taskUpdate()
         },
