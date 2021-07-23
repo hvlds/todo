@@ -19,7 +19,3 @@ body {
 .task-tag {
     float: right;
 }
-
-.line-separation {
-    border-top: 3px solid #bbb;
-}

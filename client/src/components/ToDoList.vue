@@ -38,13 +38,6 @@
                         <button @click="deleteTask(task.id)" class="delete"></button>
                     </div>
                 </div>
-                <!---
-                <div 
-                    v-if="tasks.size != 1"
-                    v-show="task.isVisible" 
-                    class="line-separation">
-                </div>
-                -->
             </li>
             <li 
                 v-for="task of completedTasks.values()" :key="task.id">
@@ -62,13 +55,6 @@
                         <button @click="deleteTask(task.id)" class="delete"></button>
                     </div>
                 </div>
-                <!--
-                <div 
-                    v-if="tasks.size != 1"
-                    v-show="task.isVisible" 
-                    class="line-separation">
-                </div>
-                -->
             </li>
         </ul>
     </div>
