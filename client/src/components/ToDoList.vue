@@ -1,15 +1,15 @@
 <template>
-    <div v-show="activeTasks.size > 0" class="box">
+    <div v-show="activeTasks.size > 0 || completedTasks.size > 0" class="box">
         <ToDoFilter @tag-toggled="onTagToggled"></ToDoFilter>
         <ul>
-            <li v-for="[index, task] in activeTasks" :key="task.id">
+            <li v-for="task of activeTasks.values()" :key="task.id">
                 <div v-show="task.isVisible" class="column columns is-vcentered mt-0">
                     <div class="column is-11">
                         <label class="label is-size-5" :class="{'task-completed':task.isCompleted}">
                             <button                                 
                                 type="button"
                                 v-show="!task.isCompleted"
-                                @click="completeTask(index)" 
+                                @click="completeTask(task.id)" 
                                 name="{{ task.description }}" 
                                 value="{{ task.description }}">
                                 <span class="icon is-small">
@@ -36,7 +36,7 @@
                         </label>
                     </div>
                     <div class="column is-1">
-                        <button @click="deleteTask(index)" class="delete"></button>
+                        <button @click="deleteTask(task.id)" class="delete"></button>
                     </div>
                 </div>
                 <div 
@@ -46,7 +46,7 @@
                 </div>
             </li>
             <li 
-                v-for="task in completedTasks" :key="task.id">
+                v-for="task of completedTasks.values()" :key="task.id">
                 <div v-show="task.isVisible" class="column columns is-vcentered mt-0">
                     <div class="column is-11">
                         <label class="label is-size-5" :class="{'task-completed':task.isCompleted}">
@@ -90,7 +90,7 @@ export default {
         }
     },
     methods: {
-        async deleteTask(index) {
+        async deleteTask(taskID) {
             const requestOptionsDelete = {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
@@ -100,20 +100,22 @@ export default {
                 mode: "cors"
             }
 
-            const url = "http://localhost:8090/task/" + index
+            const url = "http://localhost:8090/task/" + taskID
             await fetch(url, requestOptionsDelete)
                 .then(response => response.json())
-                .then(data => console.log(data))
+                .then(data => {
+                    console.log(data)
+                    this.tasks.delete(taskID)
+                    this.taskUpdate()
+                })
             
-            this.tasks.delete(index)
-            this.getCompletedTasks()
-            this.getActiveTasks()
         },
-        completeTask(index) {
-            let tempTask = this.tasks.get(index)
+        completeTask(taskID) {
+            let tempTask = this.tasks.get(taskID)
             tempTask.isCompleted = true
             tempTask.is_completed = true
-            this.tasks.set(index, tempTask) 
+            this.tasks.set(taskID, tempTask)
+            this.taskUpdate()
         },
         isToday(taskDate) {
             let today = new Date()
@@ -162,28 +164,25 @@ export default {
             }
         },
         getCompletedTasks() {
+            this.completedTasks.clear()
             for (let [key, value] of this.tasks.entries()) {
                 if (value.is_completed) {
                     this.completedTasks.set(key, value)
                 }
             }
-            console.log(this.completedTasks)
         },
         getActiveTasks() {
+            this.activeTasks.clear()
             for (let [key, value] of this.tasks.entries()) {
                 if (!value.is_completed) {
                     this.activeTasks.set(key, value)
                 }
             }
-            console.log(this.activeTasks)
         },
         taskUpdate() {
             this.getActiveTasks()
             this.getCompletedTasks()
         }
     }
-    // ,mounted() {
-        // 
-    // }
 }
 </script>
