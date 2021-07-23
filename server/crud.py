@@ -24,4 +24,6 @@ def delete_task(db: Session, task_id: int):
 
 
 def update_task(db: Session, task_id: int, task: schemas.TaskUpdate):
-    pass
+    db_task = db.query(models.Task).filter(models.Task.id == task_id).first()
+    db_task.is_completed = task.is_completed
+    db.commit() 

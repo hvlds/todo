@@ -62,3 +62,15 @@ def delete_task(task_id: int, db: Session = Depends(get_db)):
 @app.post("/tasks/", response_model=schemas.Task)
 def create_task(task: schemas.TaskCreate, db: Session = Depends(get_db)):
     return crud.create_task(db=db, task=task)
+
+
+@app.put("/task/{task_id}")
+def update_task(task_id: int, task: schemas.TaskUpdate, db: Session = Depends(get_db)):
+    db_task = crud.get_task(db, task_id=task_id)
+    if db_task is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Task doesn't exist and cannot be updated"
+        )
+    else:
+        crud.update_task(db, task_id, task)

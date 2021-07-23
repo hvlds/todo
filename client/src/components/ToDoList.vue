@@ -79,16 +79,18 @@ export default {
     components: {
         ToDoFilter
     },
+    props: {
+        tasks: Map
+    },
     data() {
         return {
             today: new Date(),
-            tasks: new Map(),
             completedTasks: new Map(),
             activeTasks: new Map(),
         }
     },
     methods: {
-        deleteTask(index) {
+        async deleteTask(index) {
             const requestOptionsDelete = {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
@@ -99,15 +101,18 @@ export default {
             }
 
             const url = "http://localhost:8090/task/" + index
-            fetch(url, requestOptionsDelete)
+            await fetch(url, requestOptionsDelete)
                 .then(response => response.json())
                 .then(data => console.log(data))
             
             this.tasks.delete(index)
+            this.getCompletedTasks()
+            this.getActiveTasks()
         },
         completeTask(index) {
             let tempTask = this.tasks.get(index)
             tempTask.isCompleted = true
+            tempTask.is_completed = true
             this.tasks.set(index, tempTask) 
         },
         isToday(taskDate) {
@@ -172,21 +177,13 @@ export default {
             }
             console.log(this.activeTasks)
         },
-        async getAllTasks() {
-            await fetch("http://localhost:8090/tasks")
-                .then(response => response.json())
-                .then(data => {
-                    for (let task of data) {
-                        task.date = new Date(task.date)
-                        this.tasks.set(task.id, task)
-                    }
-                })
+        taskUpdate() {
+            this.getActiveTasks()
+            this.getCompletedTasks()
         }
-    }, 
-    async mounted() {
-        await this.getAllTasks()
-        this.getActiveTasks()
-        this.getCompletedTasks()
     }
+    // ,mounted() {
+        // 
+    // }
 }
 </script>
