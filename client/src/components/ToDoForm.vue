@@ -1,6 +1,8 @@
 <template>
     <div>
+        <!--
         <h1 class="title is-offset-one-quarter has-text-centered">ToDo</h1>
+        -->
         <form class="box" @submit.prevent="onSubmit">
             <div class="column columns">
                 <input 

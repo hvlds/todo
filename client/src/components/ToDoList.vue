@@ -3,9 +3,9 @@
         <ToDoFilter @tag-toggled="onTagToggled"></ToDoFilter>
         <ul>
             <li v-for="task of activeTasks.values()" :key="task.id">
-                <div v-show="task.isVisible" class="column columns is-vcentered mt-0">
+                <div v-show="task.isVisible" class="column columns is-vcentered">
                     <div class="column is-11">
-                        <label class="label is-size-5" :class="{'task-completed':task.isCompleted}">
+                        <label class="label is-size-6" :class="{'task-completed':task.isCompleted}">
                             <button                                 
                                 type="button"
                                 v-show="!task.isCompleted"
@@ -17,7 +17,6 @@
                                 </span>
                             </button>
                             {{ task.description }}
-
                             <span 
                                 v-if="isToday(task.date)" 
                                 class="tag task-tag is-primary">
@@ -39,17 +38,19 @@
                         <button @click="deleteTask(task.id)" class="delete"></button>
                     </div>
                 </div>
+                <!---
                 <div 
                     v-if="tasks.size != 1"
                     v-show="task.isVisible" 
-                    style="border-top: 3px solid #bbb;">
+                    class="line-separation">
                 </div>
+                -->
             </li>
             <li 
                 v-for="task of completedTasks.values()" :key="task.id">
-                <div v-show="task.isVisible" class="column columns is-vcentered mt-0">
+                <div v-show="task.isVisible" class="column columns is-vcentered">
                     <div class="column is-11">
-                        <label class="label is-size-5" :class="{'task-completed':task.isCompleted}">
+                        <label class="label is-size-6" :class="{'task-completed':task.isCompleted}">
                             {{ task.description }}
                             <span 
                                 class="tag task-tag is-info">
@@ -61,11 +62,13 @@
                         <button @click="deleteTask(task.id)" class="delete"></button>
                     </div>
                 </div>
+                <!--
                 <div 
                     v-if="tasks.size != 1"
                     v-show="task.isVisible" 
-                    style="border-top: 3px solid #bbb;">
+                    class="line-separation">
                 </div>
+                -->
             </li>
         </ul>
     </div>
