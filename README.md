@@ -16,3 +16,6 @@ docker-compose up
 ```
 
 ## Screenshots
+
+![image1](./imgs/s1.png)
+![image2](./imgs/s2.png)
